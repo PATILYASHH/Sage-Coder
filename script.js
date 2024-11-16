@@ -1,83 +1,26 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // API Providers Filtering
-    const searchInput = document.getElementById('api-search');
-    const categorySelect = document.getElementById('api-category');
-    const priceSelect = document.getElementById('api-price');
-    const apiProviderCards = document.querySelectorAll('.api-provider-card');
+// Get the theme toggle button
+const themeToggle = document.getElementById('theme-toggle');
 
-    if (searchInput && categorySelect && priceSelect) {
-        function filterAPIProviders() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const selectedCategory = categorySelect.value;
-            const selectedPrice = priceSelect.value;
+// Get the current theme from localStorage or default to light mode
+const currentTheme = localStorage.getItem('theme') || 'light-mode';
 
-            apiProviderCards.forEach(card => {
-                const title = card.querySelector('.card-title').textContent.toLowerCase();
-                const category = card.getAttribute('data-category');
-                const price = card.getAttribute('data-price');
+// Apply the current theme on page load
+document.body.classList.add(currentTheme);
 
-                const matchesSearch = title.includes(searchTerm);
-                const matchesCategory = selectedCategory === '' || category === selectedCategory;
-                const matchesPrice = selectedPrice === '' || price === selectedPrice;
+// Set the button text based on the current theme
+themeToggle.textContent = currentTheme === 'dark-mode' ? '☀️' : '🌙';
 
-                card.style.display = matchesSearch && matchesCategory && matchesPrice ? 'block' : 'none';
-            });
-        }
+// Add an event listener to the theme toggle button
+themeToggle.addEventListener('click', () => {
+  // Determine the new theme
+  const newTheme = document.body.classList.contains('light-mode') ? 'dark-mode' : 'light-mode';
+  
+  // Replace the current theme with the new theme
+  document.body.classList.replace(currentTheme, newTheme);
+  
+  // Save the new theme in localStorage
+  localStorage.setItem('theme', newTheme);
 
-        searchInput.addEventListener('input', filterAPIProviders);
-        categorySelect.addEventListener('change', filterAPIProviders);
-        priceSelect.addEventListener('change', filterAPIProviders);
-
-        filterAPIProviders();
-    }
-
-    // Dark/Light Mode Toggle
-    const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            themeToggle.innerHTML = isDarkMode ? '<i class="fa fa-sun"></i> Light Mode' : '<i class="fa fa-moon"></i> Dark Mode';
-        });
-    }
-
-    // Issue Solving Page Search
-    const issueSearchInput = document.getElementById('issue-search');
-    const issueCards = document.querySelectorAll('.issue-card');
-
-    if (issueSearchInput) {
-        function filterIssues() {
-            const searchTerm = issueSearchInput.value.toLowerCase();
-            issueCards.forEach(card => {
-                const issueText = card.dataset.issue.toLowerCase();
-                card.style.display = issueText.includes(searchTerm) ? 'block' : 'none';
-            });
-        }
-
-        issueSearchInput.addEventListener('input', filterIssues);
-        filterIssues();
-    }
-
-    // Roadmaps Interaction
-    const roadmapCards = document.querySelectorAll('.roadmap-card');
-
-    if (roadmapCards.length) {
-        roadmapCards.forEach(card => {
-            card.addEventListener('click', () => {
-                document.querySelectorAll('.roadmap-content').forEach(content => {
-                    content.style.display = 'none';
-                });
-
-                const targetId = card.getAttribute('data-target');
-                const targetContent = document.querySelector(targetId);
-                if (targetContent) {
-                    targetContent.style.display = 'block';
-                }
-            });
-        });
-
-        document.querySelectorAll('.roadmap-content').forEach(content => {
-            content.style.display = 'none';
-        });
-    }
+  // Update the button text
+  themeToggle.textContent = newTheme === 'dark-mode' ? '☀️' : '🌙';
 });
