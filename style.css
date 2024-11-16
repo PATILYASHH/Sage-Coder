@@ -153,4 +153,18 @@
       grid-template-columns: 1fr;
     }
   }
+
+  /* Ensure the link fills the card and makes the card fully clickable */
+.card a {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    height: 100%;
+  }
+  
+  .card:hover {
+    transform: translateY(-10px); /* Optional: Enhance hover effect */
+    background: linear-gradient(135deg, #ff8e53, #ffdd4a); /* Optional: Hover background effect */
+  }
+  
   
